@@ -14,4 +14,4 @@ RUN ./mvnw clean package -DskipTests
 EXPOSE 8080
 
 # Comando para ejecutar el jar
-CMD ["java", "-jar", "target/gestiondeaplicaciones-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/musicmix-0.0.1-SNAPSHOT.jar"]
