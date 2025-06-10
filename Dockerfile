@@ -1,28 +1,17 @@
-# Usa una imagen base de Java (OpenJDK) para compilar y ejecutar la app
-FROM openjdk:17-jdk-slim AS build
+# Usa una imagen base con JDK
+FROM eclipse-temurin:17-jdk
 
-# Establece el directorio de trabajo
+# Crea un directorio para la app
 WORKDIR /app
 
-# Copia el archivo pom.xml y descarga las dependencias (esto optimiza el cache de Docker)
-COPY pom.xml .
-RUN mvn dependency:go-offline
+# Copia el código fuente
+COPY . .
 
-# Copia el código fuente y compila la app
-COPY src ./src
-RUN mvn clean package -DskipTests
+# Empaqueta el proyecto con Maven (omitir tests)
+RUN ./mvnw clean package -DskipTests
 
-# Usa una imagen más ligera para ejecutar la app
-FROM openjdk:17-jdk-slim
-
-# Establece el directorio de trabajo
-WORKDIR /app
-
-# Copia el JAR generado desde la etapa de compilación
-COPY --from=build /app/target/*.jar app.jar
-
-# Expone el puerto (ajusta según tu app, 8080 es el predeterminado para Spring Boot)
+# Expone el puerto que usará Spring Boot
 EXPOSE 8080
 
-# Comando para ejecutar la app
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando para ejecutar el jar
+CMD ["java", "-jar", "target/gestiondeaplicaciones-0.0.1-SNAPSHOT.jar"]
