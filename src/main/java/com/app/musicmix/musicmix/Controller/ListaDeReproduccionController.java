@@ -92,6 +92,19 @@ public class ListaDeReproduccionController {
         return ResponseEntity.ok(canciones);
     }
 
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<Cancion> getSongById(@PathVariable Long id){
+        Cancion cancion = cancionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Canción no encontrada"));
+        return ResponseEntity.ok(cancion);
+    }
+
+    @GetMapping("/{playlistId}/songs")
+    public ResponseEntity<List<Cancion>>getListSongs(@PathVariable Long playlistId){
+        List<Cancion> lista = cancionService.listSongs(playlistId);
+        return ResponseEntity.ok(lista);
+    }
+
     @PostMapping("/songs")
     public ResponseEntity<Cancion> createSong(@RequestBody CancionRequest cancionRequest) {
         //crea u obtiene tanto el artista como el album

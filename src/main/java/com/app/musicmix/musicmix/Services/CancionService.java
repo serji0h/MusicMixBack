@@ -1,20 +1,22 @@
 package com.app.musicmix.musicmix.Services;
 
-import com.app.musicmix.musicmix.Model.Album;
-import com.app.musicmix.musicmix.Model.Artista;
-import com.app.musicmix.musicmix.Model.Cancion;
-import com.app.musicmix.musicmix.Model.CancionAlbum;
-import com.app.musicmix.musicmix.Model.AlbumArtista;
+import com.app.musicmix.musicmix.Model.*;
 import com.app.musicmix.musicmix.Repository.AlbumRepository;
 import com.app.musicmix.musicmix.Repository.ArtistaRepository;
 import com.app.musicmix.musicmix.Repository.CancionRepository;
+import com.app.musicmix.musicmix.Repository.ListaDeReproduccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CancionService {
+
+    @Autowired
+    private ListaDeReproduccionRepository listadeReproduccionRepository;
 
     @Autowired
     private CancionRepository cancionRepository;
@@ -66,4 +68,19 @@ public class CancionService {
 
         return nuevaCancion;
     }
+
+    public List<Cancion> listSongs(Long listId) {
+        // Buscar la lista de reproducción por ID
+        ListaDeReproduccion lista = listadeReproduccionRepository.findById(listId)
+                .orElseThrow(() -> new RuntimeException("Lista de reproducción no encontrada"));
+
+        // Obtener las canciones asociadas a la lista a través de ListaCancion
+        return lista.getCanciones().stream()
+                .map(ListaCancion::getCancion)
+                .collect(Collectors.toList());
+    }
+
+//    public Cancion fingById(Long id){
+//        return cancionRepository.findById(id);
+//    }
 }
