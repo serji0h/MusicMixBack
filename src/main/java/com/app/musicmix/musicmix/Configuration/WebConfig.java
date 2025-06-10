@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8100","https://localhost:8100", "https://localhost:8443", "https://192.168.18.55:8443", "http://192.168.18.55:8100/", "https://sharing-sensibly-mastodon.ngrok-free.app", "http://127.0.0.1:8100")
+                .allowedOrigins("http://localhost:8100","https://localhost:8100", "https://localhost:8443", "https://192.168.18.55:8443", "http://192.168.18.55:8100/", "https://sharing-sensibly-mastodon.ngrok-free.app", "http://127.0.0.1:8100", "https://localhost", "file://")
                 .allowedMethods("POST", "GET")
                 .allowedHeaders("*");
     }
